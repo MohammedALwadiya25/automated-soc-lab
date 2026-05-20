@@ -1,6 +1,5 @@
 # Phase 1 — Network Design & VM Provisioning
-
-**Status:** 🔄 In progress
+=
 
 ## Objectives
 
@@ -14,44 +13,31 @@
 |---|---|---|---|---|
 | OPNsense (FW) | 192.168.100.1 | /24 | — | NAT + VMnet2 |
 | Wazuh SIEM | 192.168.100.10 | /24 | 192.168.100.1 | VMnet2 |
-| n8n SOAR | 192.168.100.20 | /24 | 192.168.100.1 | VMnet2 |
+| n8n SOAR | runs on Wazuh VM | /24 | 192.168.100.1 | VMnet2 |
 | Victim VM | 192.168.100.50 | /24 | 192.168.100.1 | VMnet2 |
 | Kali Attacker | 192.168.100.99 | /24 | 192.168.100.1 | VMnet2 |
 
 ## VM Specifications
 
 | VM | OS | RAM | vCPU | Disk |
-|---|---|---|---|---|
-| OPNsense | FreeBSD 64-bit | 2 GB | 2 | 16 GB |
-| Wazuh | Ubuntu 22.04 LTS | 8 GB | 4 | 80 GB |
-| n8n | Ubuntu 22.04 LTS | 2 GB | 2 | 20 GB |
-| Victim | Ubuntu 22.04 LTS | 2 GB | 2 | 20 GB |
-| Kali | Kali Linux 2024 | 2 GB | 2 | 40 GB |
+|---|---|---|---|---|---|
+| OPNsense | FreeBSD 64-bit | 1 GB | 2 | 16 GB |  
+| Wazuh | Official OVA 4.14.5 | 6 GB | 4 | 50 GB | 
+| Victim | Ubuntu 22.04 Server | 1 GB | 2 | 20 GB | 
+| Kali | Kali Linux 64-bit | 2 GB | 2 | 40 GB | 
 
-## Steps Completed
+## Network Notes
 
-- [ ] VMnet2 created in VMware Virtual Network Editor
-- [ ] OPNsense VM created
-- [ ] Wazuh VM created
-- [ ] n8n VM created
-- [ ] Victim VM created
-- [ ] Kali VM created
-- [ ] All VMs boot successfully
+- VMnet2 configured as Host-only, subnet 192.168.100.0/24, DHCP disabled
+- n8n will run as a Docker container on the Wazuh OVA to save RAM
+- Total VM RAM usage: ~10 GB leaving ~6 GB for Windows host
 
-## Screenshots
 
-<!-- Add your screenshots here after each step -->
-<!-- Example: ![VMnet2 config](../../screenshots/phase-1/vmnet2-config.png) -->
 
 ## Issues Encountered & Solutions
 
-<!-- Document any problems you hit and how you solved them -->
-<!-- This section is gold for your graduation report -->
-
 | Issue | Cause | Solution |
 |---|---|---|
-| — | — | — |
+| touch command not found | Windows PowerShell doesn't support Linux commands | Used New-Item PowerShell cmdlet instead |
+| Limited host RAM (16 GB) | Not enough for 5 full VMs | Installed n8n as Docker container on Wazuh OVA |
 
-## Completion Date
-
-<!-- Fill in when phase is done -->
